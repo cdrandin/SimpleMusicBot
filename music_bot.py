@@ -74,7 +74,6 @@ class SimpleMusicBot(discord.Client):
             '''
         return self.send_message(message.channel, msg)
 
-    # NOTE: No sure if should be here or in the service __init__ scope.
     @asyncio.coroutine
     def handle_youtube_fetch(self, message):
         ch = message.channel_mentions[
