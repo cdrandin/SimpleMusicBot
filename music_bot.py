@@ -3,6 +3,7 @@ import asyncio
 import logging
 import logging.config
 import os
+import sys
 import yaml
 
 from service.youtube import youtube_fetch
@@ -22,7 +23,7 @@ with open(os.path.join(PROJECT_DIR, 'logging_config.yaml')) as infile:
 
 def how_to(message):
     s = \
-    '''
+        '''
     Simple Music Bot commands:
         commands only work in `botcommands` channel
 
@@ -109,4 +110,4 @@ async def on_message(message):
 
         await handle_youtube_fetch(message)
 
-CLIENT.run('<TOKEN>')
+CLIENT.run(sys.argv[1])
