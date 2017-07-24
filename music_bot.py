@@ -6,8 +6,7 @@ import os
 import sys
 import yaml
 
-# from service.youtube import youtube_fetch
-import service
+from service.youtube import youtube_fetch
 
 LOGGER = logging.getLogger(__file__)
 LOGGER.setLevel(logging.DEBUG)
@@ -44,7 +43,7 @@ class SimpleMusicBot(discord.Client):
                 yield from self.not_in_botcommands_channel_message(message)
                 return
 
-            yield from service.handle_youtube_fetch(message)
+            yield from self.handle_youtube_fetch(message)
 
     @asyncio.coroutine
     def reset_once(self):
@@ -75,24 +74,24 @@ class SimpleMusicBot(discord.Client):
             '''
         return self.send_message(message.channel, msg)
 
-    # NOTE: No sure if should be here or in the service __init__ scope. 
-    # @asyncio.coroutine
-    # def handle_youtube_fetch(self, message):
-    #     ch = message.channel_mentions[
-    #         0] if message.channel_mentions else message.channel
-    #     msg_list = message.content.split()
-    #
-    #     query = ' '.join(msg_list[1:])
-    #     query = query.replace('<#{}>'.format(ch.id), '')
-    #     LOGGER.debug(query)
-    #
-    #     res = youtube_fetch.fetch_youtube_query(query)
-    #     LOGGER.info(res)
-    #
-    #     if res['reason'] == '':
-    #         return self.send_message(ch, youtube_fetch.youtube_link(res['href']))
-    #     else:
-    #         return self.send_message(message.channel, res['reason'])
+    # NOTE: No sure if should be here or in the service __init__ scope.
+    @asyncio.coroutine
+    def handle_youtube_fetch(self, message):
+        ch = message.channel_mentions[
+            0] if message.channel_mentions else message.channel
+        msg_list = message.content.split()
+
+        query = ' '.join(msg_list[1:])
+        query = query.replace('<#{}>'.format(ch.id), '')
+        LOGGER.debug(query)
+
+        res = youtube_fetch.fetch_youtube_query(query)
+        LOGGER.info(res)
+
+        if res['reason'] == '':
+            return self.send_message(ch, youtube_fetch.youtube_link(res['href']))
+        else:
+            return self.send_message(message.channel, res['reason'])
 
     @asyncio.coroutine
     def not_in_botcommands_channel_message(self, message):
