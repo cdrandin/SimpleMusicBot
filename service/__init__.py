@@ -7,7 +7,7 @@ LOGGER = logging.getLogger(__file__)
 
 # NOTE: Not sure how I feel about this yet. Just leaving for now.
 @asyncio.coroutine
-def handle_youtube_fetch(self, discord_message):
+def handle_youtube_fetch(discord_message):
     ch = discord_message.channel_mentions[
         0] if discord_message.channel_mentions else discord_message.channel
     msg_list = discord_message.content.split()
